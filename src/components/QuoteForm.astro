@@ -1,0 +1,215 @@
+---
+import { business, models } from '../config';
+import { t, paths, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const all = t(lang);
+const c = all.quote;
+const useNetlify = !business.formAction;
+const action = business.formAction || paths[lang].thanks;
+const netlifyAttrs = useNetlify ? { 'data-netlify': 'true', 'netlify-honeypot': 'company' } : {};
+---
+
+<section class="section quote" id="orcamento">
+  <div class="wrap quote-grid">
+    <div class="quote-intro">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h2>{c.title}</h2>
+      <p class="lead">{c.lead}</p>
+      {
+        business.email && (
+          <p class="direct">
+            {c.or} <a href={`mailto:${business.email}`}>{business.email}</a>
+          </p>
+        )
+      }
+    </div>
+
+    <form class="form" name="orcamento" method="POST" action={action} {...netlifyAttrs}>
+      {useNetlify && <input type="hidden" name="form-name" value="orcamento" />}
+      <input type="hidden" name="lang" value={lang} />
+      <p class="visually-hidden">
+        <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+      </p>
+
+      <div class="row two">
+        <label>
+          <span>{c.name} <abbr title={c.required}>*</abbr></span>
+          <input name="name" required autocomplete="name" />
+        </label>
+        <label>
+          <span>{c.email} <abbr title={c.required}>*</abbr></span>
+          <input name="email" type="email" required autocomplete="email" />
+        </label>
+      </div>
+      <div class="row two">
+        <label>
+          <span>{c.phone}</span>
+          <input name="phone" type="tel" autocomplete="tel" />
+        </label>
+        <label>
+          <span>{c.location}</span>
+          <input name="location" placeholder={c.locationHint} autocomplete="address-level2" />
+        </label>
+      </div>
+      <div class="row three">
+        <label>
+          <span>{c.model}</span>
+          <select name="model" id="quote-model">
+            <option value="">{c.unsure}</option>
+            {models.map((m) => <option value={m.id}>{all.models.items[m.id].name}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>{c.cover}</span>
+          <select name="cover">
+            <option value="">{c.unsure}</option>
+            {all.covers.items.map((cv) => <option value={cv.id}>{cv.name}</option>)}
+            <option value="mixed">{c.mixed}</option>
+          </select>
+        </label>
+        <label>
+          <span>{c.service}</span>
+          <select name="service">
+            <option value="">{c.unsure}</option>
+            {all.services.items.map((s) => <option value={s.name}>{s.name}</option>)}
+          </select>
+        </label>
+      </div>
+      <label>
+        <span>{c.message}</span>
+        <textarea name="message" rows="5" placeholder={c.messageHint}></textarea>
+      </label>
+      <label class="consent">
+        <input type="checkbox" name="consent" required />
+        <span>{c.consent}</span>
+      </label>
+      <button class="btn" type="submit">{c.submit}</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  // "Get a quote" buttons on the model cards preselect the model in the form.
+  const select = document.querySelector<HTMLSelectElement>('#quote-model');
+  document.querySelectorAll<HTMLAnchorElement>('a[data-model]').forEach((a) =>
+    a.addEventListener('click', () => {
+      if (select) select.value = a.dataset.model ?? '';
+    }),
+  );
+</script>
+
+<style>
+  .quote {
+    background: var(--paper-2);
+  }
+  .quote-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  .quote-intro {
+    display: grid;
+    gap: 20px;
+  }
+  .quote-intro .eyebrow {
+    margin-bottom: 0;
+  }
+  .direct {
+    font-weight: 600;
+  }
+  .form {
+    display: grid;
+    gap: 18px;
+    padding: clamp(22px, 3.5vw, 40px);
+    background: var(--white);
+    border-radius: var(--radius);
+  }
+  .row {
+    display: grid;
+    gap: 18px;
+  }
+  .row.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .row.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  abbr {
+    text-decoration: none;
+    color: var(--accent-text);
+  }
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px;
+    font: inherit;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--paper);
+    border: 1.5px solid transparent;
+    border-radius: 10px;
+    transition: border-color 0.15s;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #6b7670;
+  }
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--line);
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: var(--ink);
+    background: var(--white);
+  }
+  .consent {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .consent input {
+    width: 22px;
+    min-height: 22px;
+    height: 22px;
+    margin: 1px 0 0;
+    accent-color: var(--ink);
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  @media (max-width: 900px) {
+    .quote-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .row.two,
+    .row.three {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

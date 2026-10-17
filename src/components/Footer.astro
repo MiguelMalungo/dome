@@ -1,0 +1,102 @@
+---
+import Logo from './Logo.astro';
+import { business } from '../config';
+import { t, paths, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const home = paths[lang].home;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="id">
+      <Logo class="footer-logo" />
+      <p>{c.footer.tagline}</p>
+    </div>
+    <ul class="links">
+      <li><a href={`${home}#como-funciona`}>{c.nav.how}</a></li>
+      <li><a href={`${home}#modelos`}>{c.nav.models}</a></li>
+      <li><a href={`${home}#revestimentos`}>{c.nav.covers}</a></li>
+      <li><a href={`${home}#sustentabilidade`}>{c.nav.sustainability}</a></li>
+      <li><a href={`${home}#construimos`}>{c.nav.services}</a></li>
+      <li><a href={`${home}#orcamento`}>{c.nav.quote}</a></li>
+    </ul>
+    <ul class="contact">
+      {business.email && <li><a href={`mailto:${business.email}`}>{business.email}</a></li>}
+      {business.phone && <li><a href={`tel:${business.phone.replace(/\s/g, '')}`}>{business.phone}</a></li>}
+      {business.instagram && <li><a href={business.instagram} rel="noopener">Instagram</a></li>}
+      <li><a href={paths[lang === 'pt' ? 'en' : 'pt'].home}>{c.nav.switchLabel}</a></li>
+    </ul>
+  </div>
+  <div class="wrap legal">
+    <p>© {year} D’OME. {c.footer.rights}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink-deep);
+    color: #cfd8d2;
+    padding-block: 64px 32px;
+    --logo-cut: var(--ink-deep);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .id {
+    display: grid;
+    gap: 14px;
+    color: var(--paper);
+  }
+  .id :global(.footer-logo) {
+    display: block;
+    width: 180px;
+    height: auto;
+  }
+  .id p {
+    font-size: 0.8rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #cfd8d2;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  a {
+    color: #e8ede9;
+    text-decoration: none;
+    display: inline-block;
+    padding-block: 6px;
+  }
+  a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+  .legal {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.85rem;
+    color: #a9b6af;
+  }
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .id {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,193 @@
+---
+import Logo from './Logo.astro';
+import { t, paths, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  page?: 'home' | 'thanks';
+}
+const { lang, page = 'home' } = Astro.props;
+const c = t(lang);
+const other: Lang = lang === 'pt' ? 'en' : 'pt';
+const home = paths[lang].home;
+const links = [
+  ['como-funciona', c.nav.how],
+  ['modelos', c.nav.models],
+  ['revestimentos', c.nav.covers],
+  ['sustentabilidade', c.nav.sustainability],
+  ['construimos', c.nav.services],
+  ['perguntas', c.nav.faq],
+] as const;
+const href = (id: string) => `${home}#${id}`;
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={home} aria-label={`D’OME — ${c.footer.tagline}`}>
+      <Logo class="brand-logo" />
+    </a>
+
+    <nav class="nav" aria-label={c.nav.menu}>
+      <ul>
+        {links.map(([id, label]) => <li><a href={href(id)}>{label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="lang" href={paths[other][page]} hreflang={other} lang={other}>
+        <span class="visually-hidden">{c.nav.switchLabel}</span>
+        <span aria-hidden="true">{other.toUpperCase()}</span>
+      </a>
+      <a class="btn cta" href={href('orcamento')}>{c.nav.quote}</a>
+      <details class="menu">
+        <summary aria-label={c.nav.menu}>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </summary>
+        <ul class="menu-list">
+          {links.map(([id, label]) => <li><a href={href(id)}>{label}</a></li>)}
+          <li><a href={href('orcamento')}>{c.nav.quote}</a></li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Close the mobile menu after choosing a link.
+  document.querySelectorAll<HTMLAnchorElement>('.menu-list a').forEach((a) =>
+    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')),
+  );
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 72px;
+  }
+  .brand {
+    color: var(--ink);
+    display: flex;
+    flex: none;
+  }
+  .brand :global(.brand-logo) {
+    display: block;
+    width: 128px;
+    height: auto;
+  }
+  .nav {
+    flex: 1;
+  }
+  .nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: clamp(14px, 1.8vw, 28px);
+  }
+  .nav a,
+  .lang {
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .nav a:hover,
+  .lang:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+  }
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    letter-spacing: 0.08em;
+  }
+  .cta {
+    min-height: 44px;
+    padding: 0.55em 1.15em;
+    font-size: 0.92rem;
+  }
+  .menu {
+    display: none;
+    position: relative;
+  }
+  .menu summary {
+    list-style: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu[open] summary {
+    background: var(--paper-2);
+  }
+  .menu-list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    min-width: 240px;
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 18px 40px rgba(20, 42, 34, 0.14);
+  }
+  .menu-list a {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .menu-list a:hover {
+    background: var(--paper);
+  }
+
+  @media (max-width: 1060px) {
+    .nav {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+  }
+  @media (max-width: 560px) {
+    .cta {
+      display: none;
+    }
+    .brand :global(.brand-logo) {
+      width: 112px;
+    }
+  }
+</style>

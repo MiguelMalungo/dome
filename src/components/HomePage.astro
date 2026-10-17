@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import HowItWorks from './HowItWorks.astro';
+import Models from './Models.astro';
+import Covers from './Covers.astro';
+import Sustainability from './Sustainability.astro';
+import Services from './Services.astro';
+import Faq from './Faq.astro';
+import QuoteForm from './QuoteForm.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Base lang={lang}>
+  <Hero lang={lang} />
+  <HowItWorks lang={lang} />
+  <Models lang={lang} />
+  <Covers lang={lang} />
+  <Sustainability lang={lang} />
+  <Services lang={lang} />
+  <Faq lang={lang} />
+  <QuoteForm lang={lang} />
+</Base>

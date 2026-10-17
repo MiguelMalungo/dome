@@ -1,0 +1,55 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { t, paths, type Lang } from '../i18n/ui';
+import { withBase } from '../lib/url';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  page?: 'home' | 'thanks';
+  noindex?: boolean;
+}
+const { lang, title, description, page = 'home', noindex = false } = Astro.props;
+const c = t(lang);
+const other: Lang = lang === 'pt' ? 'en' : 'pt';
+const canonical = new URL(paths[lang][page], Astro.site);
+const alternate = new URL(paths[other][page], Astro.site);
+const pageTitle = title ?? c.meta.title;
+const pageDescription = description ?? c.meta.description;
+---
+
+<!doctype html>
+<html lang={lang === 'pt' ? 'pt-PT' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang === 'pt' ? 'pt-PT' : 'en'} href={canonical} />
+    <link rel="alternate" hreflang={other === 'pt' ? 'pt-PT' : 'en'} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={new URL(paths.pt[page], Astro.site)} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <meta name="theme-color" content="#1E3D34" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(withBase('/og.png'), Astro.site)} />
+    <meta property="og:locale" content={lang === 'pt' ? 'pt_PT' : 'en_GB'} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{c.nav.skip}</a>
+    <Header lang={lang} page={page} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

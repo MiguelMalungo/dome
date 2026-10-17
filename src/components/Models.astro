@@ -1,0 +1,167 @@
+---
+import Visual from './Visual.astro';
+import { models } from '../config';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).models;
+const num = (n: number) => (lang === 'pt' ? String(n).replace('.', ',') : String(n));
+
+// Side elevation drawn to scale (3V 5/8: base radius 0.985 R, base 0.18 R below the centre).
+const UNIT = 24; // svg units per metre
+const W = 8 * UNIT + 40;
+const H = 5 * UNIT + 16;
+function elevation(d: number) {
+  const R = (d / 2 / 0.985) * UNIT;
+  const half = (d / 2) * UNIT;
+  return `M${-half.toFixed(1)} 0A${R.toFixed(1)} ${R.toFixed(1)} 0 1 1 ${half.toFixed(1)} 0Z`;
+}
+// Horizontal ring lines at the 3V vertex rings (z relative to the sphere centre).
+function rings(d: number) {
+  const R = (d / 2 / 0.985) * UNIT;
+  return [0.18, 0.48, 0.76]
+    .map((z) => {
+      const y = -(z + 0.18) * R;
+      const hw = Math.sqrt(1 - z * z) * R;
+      return `M${(-hw).toFixed(1)} ${y.toFixed(1)}H${hw.toFixed(1)}`;
+    })
+    .join('');
+}
+const P = 1.75 * UNIT; // a 1.75 m person for scale
+---
+
+<section class="section models" id="modelos">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h2>{c.title}</h2>
+      <p class="lead">{c.lead}</p>
+    </div>
+
+    <ul class="model-list">
+      {
+        models.map((m) => {
+          const item = c.items[m.id];
+          return (
+            <li class="model">
+              <svg class="scale" viewBox={`${-W / 2} ${-H} ${W} ${H + 4}`} aria-hidden="true">
+                <line x1={-W / 2} x2={W / 2} y1="0.5" y2="0.5" stroke="currentColor" stroke-opacity="0.25" />
+                <path d={elevation(m.diameter)} fill="var(--wood)" stroke="var(--wood-dark)" stroke-width="1.5" />
+                <path d={rings(m.diameter)} stroke="var(--wood-dark)" stroke-opacity="0.45" stroke-width="1.2" />
+                <g transform={`translate(${(m.diameter / 2) * UNIT + 16} 0)`} fill="var(--ink)">
+                  <circle cx="0" cy={-P + 4.2} r="4.2" />
+                  <rect x="-5" y={-P + 9.6} width="10" height={P * 0.4} rx="3" />
+                  <rect x="-4.6" y={-P * 0.52} width="4" height={P * 0.52} rx="1.5" />
+                  <rect x="0.6" y={-P * 0.52} width="4" height={P * 0.52} rx="1.5" />
+                </g>
+              </svg>
+              <h3>{item.name}</h3>
+              <p class="use">{item.use}</p>
+              <dl class="specs">
+                <div>
+                  <dt>{c.diameter}</dt>
+                  <dd>{num(m.diameter)} m</dd>
+                </div>
+                <div>
+                  <dt>{c.floor}</dt>
+                  <dd>
+                    {num(m.floor)} m²
+                  </dd>
+                </div>
+                <div>
+                  <dt>{c.height}</dt>
+                  <dd>{num(m.height)} m</dd>
+                </div>
+              </dl>
+              <a class="btn btn--ghost" href="#orcamento" data-model={m.id}>
+                {c.cta}
+                <span class="visually-hidden">— {item.name}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <p class="other">{c.other}</p>
+
+    <Visual name="interior" alt={c.interiorAlt} class="interior" sizes="(min-width: 1280px) 1200px, 100vw" />
+  </div>
+</section>
+
+<style>
+  .model-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .model {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    gap: 12px;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .scale {
+    width: 100%;
+    height: auto;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .model h3 {
+    font-size: 1.6rem;
+    font-stretch: 115%;
+  }
+  .use {
+    color: var(--muted);
+  }
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 8px 0 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .specs dt {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .specs dd {
+    margin: 2px 0 0;
+    font-weight: 750;
+    font-stretch: 110%;
+    font-size: 1.1rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .model .btn {
+    justify-self: start;
+  }
+  .other {
+    margin-top: 24px;
+    color: var(--muted);
+  }
+  .models :global(.interior) {
+    margin-top: clamp(40px, 6vw, 72px);
+    border-radius: var(--radius);
+    aspect-ratio: 21 / 9;
+  }
+  @media (max-width: 900px) {
+    .model-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .models :global(.interior) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

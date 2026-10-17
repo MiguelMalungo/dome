@@ -1,0 +1,240 @@
+---
+import { Image } from 'astro:assets';
+import Visual from './Visual.astro';
+import { getPhoto } from '../lib/photos';
+import { t, type Lang } from '../i18n/ui';
+import heroSvg from '../illustrations/dome-hero.svg?raw';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const photo = getPhoto('hero');
+---
+
+<section class:list={['hero', photo ? 'hero--photo' : 'hero--drawn']}>
+  {
+    photo && (
+      <div class="hero-bg">
+        <Image src={photo} alt={c.hero.alt} widths={[800, 1280, 1920, 2560]} sizes="100vw" loading="eager" fetchpriority="high" />
+      </div>
+    )
+  }
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{c.hero.eyebrow}</p>
+      <h1>{c.hero.title}</h1>
+      <p class="lead">{c.hero.lead}</p>
+      <div class="hero-ctas">
+        <a class="btn" href="#modelos">{c.hero.ctaPrimary}</a>
+        <a class="btn btn--ghost" href="#orcamento">{c.hero.ctaSecondary}</a>
+      </div>
+      <ul class="hero-tags">
+        {c.hero.tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    </div>
+    {
+      !photo && (
+        <div class="hero-art">
+          <Visual name="hero-illustration" alt={c.hero.alt} illustration={heroSvg} loading="eager" />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<section class="facts" aria-label="D’OME">
+  <div class="wrap">
+    <ul class="facts-list">
+      {
+        c.facts.map((f) => (
+          <li>
+            <strong>{f.value}</strong>
+            <span>
+              {f.label}
+              {f.note && (
+                <sup class="note">
+                  <a href={`#nota-${f.note}`} aria-label={`${c.sustainability.sources} ${f.note}`}>
+                    {f.note}
+                  </a>
+                </sup>
+              )}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero--drawn {
+    padding-block: clamp(48px, 7vw, 96px) clamp(24px, 4vw, 48px);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+  }
+  .hero-copy {
+    display: grid;
+    gap: 22px;
+    max-width: 40rem;
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.5rem, 5.2vw, 4.4rem);
+  }
+  .hero-copy .eyebrow {
+    margin-bottom: 0;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .hero-tags {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .hero-tags li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-tags li::before {
+    content: '';
+    width: 9px;
+    height: 8px;
+    background: var(--wood);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .hero-art {
+    margin-right: calc(-1 * var(--gutter));
+  }
+
+  /* Photo version */
+  .hero--photo {
+    min-height: min(88vh, 860px);
+    display: flex;
+    align-items: flex-end;
+    padding-block: 140px clamp(48px, 7vw, 96px);
+    color: var(--paper);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 68% center; /* keeps the dome (right third of the photo) in view on narrow screens */
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(14, 30, 24, 0.82) 0%, rgba(14, 30, 24, 0.55) 45%, rgba(14, 30, 24, 0.08) 75%),
+      linear-gradient(0deg, rgba(14, 30, 24, 0.55) 0%, rgba(14, 30, 24, 0) 45%);
+  }
+  .hero--photo .hero-grid {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero--photo h1 {
+    color: var(--paper);
+  }
+  .hero--photo .lead,
+  .hero--photo .hero-tags {
+    color: #dfe6e1;
+  }
+  .hero--photo .eyebrow {
+    color: #f0c46e;
+  }
+  .hero--photo .btn {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--ink);
+  }
+  .hero--photo .btn--ghost {
+    background: transparent;
+    color: var(--paper);
+  }
+  .hero--photo .btn--ghost:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .facts {
+    padding-block: 8px clamp(40px, 6vw, 72px);
+  }
+  .hero--photo + .facts {
+    padding-top: clamp(40px, 6vw, 72px);
+  }
+  .facts-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 2px solid var(--ink);
+  }
+  .facts-list li {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    padding: 22px 22px 6px 0;
+  }
+  .facts-list li + li {
+    padding-left: 22px;
+    border-left: 1px solid var(--line);
+  }
+  .facts-list strong {
+    font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+    font-weight: 800;
+    font-stretch: 115%;
+    color: var(--ink);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .facts-list span {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-art {
+      margin-inline: calc(-1 * var(--gutter));
+      order: -1;
+    }
+    .facts-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .facts-list li + li:nth-child(3) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .facts-list li:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

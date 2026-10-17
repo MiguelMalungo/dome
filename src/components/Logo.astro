@@ -1,0 +1,41 @@
+---
+// D'OME wordmark. The D is the dome seen from the side, the O is the dome seen from above.
+// Colour follows `currentColor`; the apostrophe triangle uses --accent.
+interface Props {
+  variant?: 'lattice' | 'solid';
+  class?: string;
+  label?: string;
+}
+const { variant = 'lattice', class: cls, label = 'D’OME' } = Astro.props;
+const D_STRUTS =
+  'M113.7 100L113.7 48.4M113.7 100L80.1 100M113.7 100L80.1 151.7M113.7 100L80.1 48.3M113.7 151.6L113.7 100M113.7 151.6L80.1 151.7M113.7 151.6L80.1 183.6M113.7 48.4L80.1 16.4M113.7 48.4L80.1 48.3M129.1 100L113.7 100M129.1 100L113.7 151.6M129.1 100L113.7 48.4M25.8 -3.3L0 4.9M25.8 131.9L0 100M25.8 131.9L0 158.8M25.8 131.9L25.8 68.1M25.8 16.4L0 4.9M25.8 16.4L0 41.2M25.8 16.4L25.8 -3.3M25.8 183.6L0 158.8M25.8 183.6L0 195.1M25.8 183.6L25.8 131.9M25.8 203.3L0 195.1M25.8 203.3L25.8 183.6M25.8 68.1L0 100M25.8 68.1L0 41.2M25.8 68.1L25.8 16.4M80.1 100L25.8 131.9M80.1 100L25.8 68.1M80.1 100L80.1 48.3M80.1 151.7L25.8 131.9M80.1 151.7L25.8 183.6M80.1 151.7L80.1 100M80.1 16.4L25.8 -3.3M80.1 16.4L25.8 16.4M80.1 183.6L25.8 183.6M80.1 183.6L25.8 203.3M80.1 183.6L80.1 151.7M80.1 48.3L25.8 16.4M80.1 48.3L25.8 68.1M80.1 48.3L80.1 16.4';
+const O_STRUTS =
+  'M0 -54.3L-51.6 -16.8L-31.9 43.9L31.9 43.9L51.6 -16.8ZM0 -87.9L-51.7 -71.1L-83.6 -27.2L-83.6 27.2L-51.7 71.1L0 87.9L51.7 71.1L83.6 27.2L83.6 -27.2L51.7 -71.1ZM0 0L0 -54.3M0 0L-51.6 -16.8M0 0L-31.9 43.9M0 0L31.9 43.9M0 0L51.6 -16.8M0 -54.3L0 -87.9M0 -54.3L-51.7 -71.1M0 -54.3L51.7 -71.1M-51.6 -16.8L-51.7 -71.1M-51.6 -16.8L-83.6 -27.2M-51.6 -16.8L-83.6 27.2M-31.9 43.9L-83.6 27.2M-31.9 43.9L-51.7 71.1M-31.9 43.9L0 87.9M31.9 43.9L0 87.9M31.9 43.9L51.7 71.1M31.9 43.9L83.6 27.2M51.6 -16.8L83.6 27.2M51.6 -16.8L83.6 -27.2M51.6 -16.8L51.7 -71.1M0 -87.9L-31.9 -98.2M0 -87.9L31.9 -98.2M-51.7 -71.1L-31.9 -98.2M-51.7 -71.1L-83.6 -60.7M-83.6 -27.2L-83.6 -60.7M-83.6 -27.2L-103.3 0M-83.6 27.2L-103.3 0M-83.6 27.2L-83.6 60.7M-51.7 71.1L-83.6 60.7M-51.7 71.1L-31.9 98.2M0 87.9L-31.9 98.2M0 87.9L31.9 98.2M51.7 71.1L31.9 98.2M51.7 71.1L83.6 60.7M83.6 27.2L83.6 60.7M83.6 27.2L103.3 0M83.6 -27.2L103.3 0M83.6 -27.2L83.6 -60.7M51.7 -71.1L83.6 -60.7M51.7 -71.1L31.9 -98.2';
+---
+
+{
+  variant === 'lattice' ? (
+    <svg class={cls} viewBox="-12 -12 790 228" role="img" aria-label={label} fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d={D_STRUTS} stroke-width="5" />
+      <path d="M0 200L0 0A103.3 103.3 0 1 1 0 200Z" stroke-width="14" />
+      <path d="M152 0H184L168 34Z" fill="var(--accent, #D49A2A)" stroke="none" />
+      <g transform="translate(303.3 100)">
+        <path d={O_STRUTS} stroke-width="5" />
+        <circle r="103.3" stroke-width="14" />
+      </g>
+      <path d="M442 200V0L521 128L600 0V200M640 0H764M640 0V200H764M640 100H744" stroke-width="14" />
+    </svg>
+  ) : (
+    <svg class={cls} viewBox="-12 -12 790 228" role="img" aria-label={label} stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 200L0 0A103.3 103.3 0 1 1 0 200Z" fill="currentColor" />
+      <path d={D_STRUTS} fill="none" stroke="var(--logo-cut, #F2F3EF)" stroke-width="4.5" />
+      <path d="M152 0H184L168 34Z" fill="var(--accent, #D49A2A)" />
+      <g transform="translate(303.3 100)">
+        <circle r="103.3" fill="currentColor" />
+        <path d={O_STRUTS} fill="none" stroke="var(--logo-cut, #F2F3EF)" stroke-width="4.5" />
+      </g>
+      <path d="M436 200V0H474L521 92L568 0H606V200H574V72L521 168L468 72V200Z" fill="currentColor" />
+      <path d="M636 0H766V30H668V85H752V115H668V170H766V200H636Z" fill="currentColor" />
+    </svg>
+  )
+}

@@ -1,0 +1,42 @@
+---
+// Shows a photo from src/assets/photos/<name>.(jpg|jpeg|png|webp) when one exists,
+// otherwise falls back to the code-drawn dome illustration. Drop a photo in and rebuild.
+import { Image } from 'astro:assets';
+import { getPhoto } from '../lib/photos';
+
+interface Props {
+  name: string;
+  alt: string;
+  illustration?: string;
+  class?: string;
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+}
+const { name, alt, illustration, class: cls, sizes = '(min-width: 1100px) 600px, 100vw', loading = 'lazy' } = Astro.props;
+
+const photo = getPhoto(name);
+---
+
+{
+  photo ? (
+    <Image src={photo} alt={alt} class:list={['visual visual--photo', cls]} widths={[480, 800, 1200, 1800]} sizes={sizes} loading={loading} />
+  ) : illustration ? (
+    <div class:list={['visual visual--illustration', cls]} role="img" aria-label={alt} set:html={illustration} />
+  ) : null
+}
+
+<style>
+  .visual {
+    display: block;
+    width: 100%;
+  }
+  .visual--photo {
+    height: 100%;
+    object-fit: cover;
+  }
+  .visual--illustration :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

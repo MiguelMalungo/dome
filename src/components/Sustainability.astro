@@ -1,0 +1,143 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).sustainability;
+// Dome seen from above, same geometry as the O in the logo.
+const TOP =
+  'M0 -54.3L-51.6 -16.8L-31.9 43.9L31.9 43.9L51.6 -16.8ZM0 -87.9L-51.7 -71.1L-83.6 -27.2L-83.6 27.2L-51.7 71.1L0 87.9L51.7 71.1L83.6 27.2L83.6 -27.2L51.7 -71.1ZM0 0L0 -54.3M0 0L-51.6 -16.8M0 0L-31.9 43.9M0 0L31.9 43.9M0 0L51.6 -16.8M0 -54.3L0 -87.9M0 -54.3L-51.7 -71.1M0 -54.3L51.7 -71.1M-51.6 -16.8L-51.7 -71.1M-51.6 -16.8L-83.6 -27.2M-51.6 -16.8L-83.6 27.2M-31.9 43.9L-83.6 27.2M-31.9 43.9L-51.7 71.1M-31.9 43.9L0 87.9M31.9 43.9L0 87.9M31.9 43.9L51.7 71.1M31.9 43.9L83.6 27.2M51.6 -16.8L83.6 27.2M51.6 -16.8L83.6 -27.2M51.6 -16.8L51.7 -71.1M0 -87.9L-31.9 -98.2M0 -87.9L31.9 -98.2M-51.7 -71.1L-31.9 -98.2M-51.7 -71.1L-83.6 -60.7M-83.6 -27.2L-83.6 -60.7M-83.6 -27.2L-103.3 0M-83.6 27.2L-103.3 0M-83.6 27.2L-83.6 60.7M-51.7 71.1L-83.6 60.7M-51.7 71.1L-31.9 98.2M0 87.9L-31.9 98.2M0 87.9L31.9 98.2M51.7 71.1L31.9 98.2M51.7 71.1L83.6 60.7M83.6 27.2L83.6 60.7M83.6 27.2L103.3 0M83.6 -27.2L103.3 0M83.6 -27.2L83.6 -60.7M51.7 -71.1L83.6 -60.7M51.7 -71.1L31.9 -98.2';
+---
+
+<section class="section sustain" id="sustentabilidade">
+  <svg class="sustain-bg" viewBox="-110 -110 220 220" aria-hidden="true">
+    <path d={TOP} fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path>
+    <circle r="103.3" fill="none" stroke="currentColor" stroke-width="3"></circle>
+  </svg>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h2>{c.title}</h2>
+    </div>
+    <ul class="points">
+      {
+        c.points.map((p) => (
+          <li>
+            <h3>{p.title}</h3>
+            <p>
+              {p.text}
+              {p.note && (
+                <sup class="note">
+                  <a href={`#nota-${p.note}`} aria-label={`${c.sources} ${p.note}`}>
+                    {p.note}
+                  </a>
+                </sup>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="sources">
+      <p class="sources-title">{c.sources}</p>
+      <ol>
+        <li id="nota-1">{c.footnotes[0]}</li>
+        <li id="nota-2"><a href={c.sourceUrl} rel="noopener">{c.footnotes[1]}</a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sustain {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: #d6dfd9;
+  }
+  .sustain-bg {
+    position: absolute;
+    width: min(820px, 90vw);
+    right: -14%;
+    top: -10%;
+    color: rgba(242, 243, 239, 0.07);
+    pointer-events: none;
+  }
+  .wrap {
+    position: relative;
+  }
+  .sustain h2,
+  .sustain h3 {
+    color: var(--paper);
+  }
+  .sustain .eyebrow {
+    color: #f0c46e;
+  }
+  .points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 44px 40px;
+  }
+  .points li {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding-top: 22px;
+    border-top: 1px solid rgba(242, 243, 239, 0.22);
+    position: relative;
+  }
+  .points li::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 22px;
+    height: 3px;
+    background: var(--accent);
+  }
+  .points p {
+    color: #c9d4cd;
+  }
+  .points .note a,
+  .sources a {
+    color: #f0c46e;
+  }
+  .sources {
+    margin-top: clamp(48px, 6vw, 72px);
+    font-size: 0.85rem;
+    color: #aebcb4;
+    max-width: 52rem;
+  }
+  .sources-title {
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+  .sources ol {
+    margin: 0;
+    padding-left: 1.2em;
+    display: grid;
+    gap: 4px;
+  }
+  .sources li:target {
+    color: var(--paper);
+  }
+  @media (max-width: 960px) {
+    .points {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .points {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+    }
+  }
+</style>

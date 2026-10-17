@@ -1,0 +1,115 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).services;
+const quote = t(lang).nav.quote;
+---
+
+<section class="section services" id="construimos">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h2>{c.title}</h2>
+    </div>
+    <ol class="service-list">
+      {
+        c.items.map((s, i) => (
+          <li class="service">
+            <div class="level" aria-hidden="true">
+              {[0, 1, 2].map((k) => (
+                <span class:list={[k <= i && 'on']} />
+              ))}
+            </div>
+            <p class="who">{s.who}</p>
+            <h3>{s.name}</h3>
+            <p class="text">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="services-foot">
+      <p>{c.note}</p>
+      <a class="btn" href="#orcamento">{quote}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 2px solid var(--ink);
+  }
+  .service {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 28px 28px 32px 0;
+  }
+  .service + .service {
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+  .level {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+  .level span {
+    width: 18px;
+    height: 16px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    background: var(--paper-2);
+  }
+  .level span.on {
+    background: var(--wood);
+  }
+  .who {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+  .service h3 {
+    font-size: 1.6rem;
+    font-stretch: 115%;
+  }
+  .text {
+    color: var(--muted);
+  }
+  .services-foot {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 28px;
+    background: var(--white);
+    border-radius: var(--radius);
+  }
+  .services-foot p {
+    max-width: 40rem;
+  }
+  @media (max-width: 860px) {
+    .service-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .service,
+    .service + .service {
+      padding: 24px 0;
+      border-left: 0;
+    }
+    .service + .service {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

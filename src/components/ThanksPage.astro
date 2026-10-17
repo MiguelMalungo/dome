@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { t, paths, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).thanks;
+---
+
+<Base lang={lang} page="thanks" title={`${c.title} — D’OME`} noindex>
+  <section class="section thanks">
+    <div class="wrap">
+      <p class="eyebrow">D’OME</p>
+      <h1>{c.title}</h1>
+      <p class="lead">{c.text}</p>
+      <a class="btn" href={paths[lang].home}>{c.back}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    min-height: 60vh;
+  }
+  .thanks .wrap {
+    display: grid;
+    gap: 22px;
+    justify-items: start;
+  }
+</style>
