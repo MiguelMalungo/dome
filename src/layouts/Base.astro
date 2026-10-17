@@ -4,6 +4,9 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { t, paths, type Lang } from '../i18n/ui';
 import { withBase } from '../lib/url';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import { jsonLd } from '../lib/jsonld';
 
 interface Props {
   lang: Lang;
@@ -43,6 +46,10 @@ const pageDescription = description ?? c.meta.description;
     <meta property="og:image" content={new URL(withBase('/og.png'), Astro.site)} />
     <meta property="og:locale" content={lang === 'pt' ? 'pt_PT' : 'en_GB'} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="text/plain" href={withBase('/llms.txt')} title="llms.txt" />
+    {page === 'home' && <script type="application/ld+json" set:html={JSON.stringify(jsonLd(lang, Astro.site!))} />}
+    <Analytics />
+    <SpeedInsights />
   </head>
   <body>
     <a class="skip-link" href="#main">{c.nav.skip}</a>

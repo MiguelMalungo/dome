@@ -10,7 +10,13 @@ const BASE = '/dome';
 export default defineConfig({
   site: SITE,
   base: BASE,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: { defaultLocale: 'pt', locales: { pt: 'pt-PT', en: 'en' } },
+      // Thank-you pages are noindex.
+      filter: (page) => !/\/(obrigado|thanks)\/?$/.test(page),
+    }),
+  ],
   i18n: {
     defaultLocale: 'pt',
     locales: ['pt', 'en'],
