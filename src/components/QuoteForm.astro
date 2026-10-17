@@ -10,6 +10,7 @@ const all = t(lang);
 const c = all.quote;
 const useNetlify = !business.formAction;
 const action = business.formAction || paths[lang].thanks;
+const next = new URL(paths[lang].thanks, Astro.site ?? Astro.url).href;
 const netlifyAttrs = useNetlify ? { 'data-netlify': 'true', 'netlify-honeypot': 'company' } : {};
 ---
 
@@ -30,9 +31,19 @@ const netlifyAttrs = useNetlify ? { 'data-netlify': 'true', 'netlify-honeypot': 
 
     <form class="form" name="orcamento" method="POST" action={action} {...netlifyAttrs}>
       {useNetlify && <input type="hidden" name="form-name" value="orcamento" />}
+      {
+        !useNetlify && (
+          <>
+            <input type="hidden" name="_cc" value={business.formCc} />
+            <input type="hidden" name="_subject" value={business.formSubject} />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_next" value={next} />
+          </>
+        )
+      }
       <input type="hidden" name="lang" value={lang} />
       <p class="visually-hidden">
-        <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+        <label>Company <input name={useNetlify ? 'company' : '_honey'} tabindex="-1" autocomplete="off" /></label>
       </p>
 
       <div class="row two">

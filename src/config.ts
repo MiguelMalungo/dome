@@ -2,12 +2,14 @@
 // TODO: fill these in before launch.
 export const business = {
   name: 'D’OME',
-  email: '', // e.g. ola@your-domain.pt
+  email: 'domehomept@gmail.com',
   phone: '', // e.g. +351 9xx xxx xxx
   instagram: '', // full URL
-  // Netlify Forms handles the quote form when the site is hosted on Netlify.
-  // To use another service (Formspree, Basin…), put its endpoint here.
-  formAction: '',
+  // Quote form endpoint. FormSubmit (formsubmit.co) relays posts to email on static hosting.
+  // Leave empty to fall back to Netlify Forms.
+  formAction: 'https://formsubmit.co/domehomept@gmail.com',
+  formCc: 'miguelferrazguedes@mail.grokbot.com',
+  formSubject: 'Novo pedido de orçamento — domehome.pt',
 };
 
 // Dome geometry used for the specs on the site (3V 5/8 geodesic dome).

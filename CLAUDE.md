@@ -8,7 +8,7 @@ Marketing site for **D’OME**, a business selling wooden geodesic dome kits (DI
 - `npm run dev` (http://localhost:4321) · `npm run build` → `dist/` · `npm run preview` · `npm run photos` (Higgsfield)
 - System Node is 20; use Homebrew's `node@22` (`/opt/homebrew/opt/node@22/bin`). `node_modules` is a symlink to `node_modules.nosync/node_modules` (iCloud). Install deps with `sh scripts/install-deps.sh`, never plain `npm install`/`npm ci` in this folder (it replaces the link and iCloud then deletes files).
 - Fonts: `@fontsource-variable/archivo` (width + weight axes), self-hosted.
-- Quote form: Netlify Forms (`data-netlify`). To use another service, set `business.formAction` in `src/config.ts`.
+- Quote form: FormSubmit (`business.formAction` in `src/config.ts` → formsubmit.co, CC + subject there too). Empty `formAction` falls back to Netlify Forms (`data-netlify`).
 - Hosting: GitHub Pages at https://miguelmalungo.github.io/dome/ (`npm run deploy` → `gh-pages` branch). Served under `base: '/dome'`: build every internal link or `public/` asset URL with `withBase()` (`src/lib/url.ts`) or `paths` (`src/i18n/ui.ts`), never a bare `/…`.
 - `docs/business-brief.md` is internal: kept out of the public repo via `.git/info/exclude`.
 
