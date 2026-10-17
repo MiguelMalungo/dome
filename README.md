@@ -47,4 +47,13 @@ Open a terminal in this folder and run `claude`. `CLAUDE.md` gives it the projec
 
 ## Deploy
 
-Netlify is the easiest: connect the repo (or drag `dist/` in), build command `npm run build`, publish directory `dist`. The quote form uses Netlify Forms, so submissions appear in the Netlify dashboard with no extra setup. Set the real domain in `astro.config.mjs` first.
+The site is live on GitHub Pages: https://miguelmalungo.github.io/dome/
+
+```sh
+git push            # source to main
+npm run deploy      # builds and publishes dist/ to the gh-pages branch
+```
+
+It is served under `/dome/`, set as `base` in `astro.config.mjs`. Links and assets go through `withBase()` (`src/lib/url.ts`), so moving to a real domain only needs `SITE` and `BASE` changed there.
+
+**The quote form does not work on GitHub Pages** (static hosting can't receive form posts). Either put a form service's endpoint (Formspree, Basin…) in `business.formAction` in `src/config.ts`, or host on Netlify, where the form works as is via Netlify Forms (build command `npm run build`, publish directory `dist`, `BASE` set to `'/'`).
