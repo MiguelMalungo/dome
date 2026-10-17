@@ -7,9 +7,9 @@ export type Lang = 'pt' | 'en';
 
 const pt = {
   meta: {
-    title: 'D’OME — Cúpulas geodésicas em madeira',
+    title: 'D’OME — Domos geodésicos em madeira',
     description:
-      'Kits de cúpulas geodésicas em madeira para montar por si, triângulo a triângulo — ou chave na mão. Casas, estúdios e refúgios com menos material e menos impacto.',
+      'Kits de domos geodésicos em madeira para montar por si, triângulo a triângulo — ou chave na mão. Casas, estúdios e refúgios com menos material e menos impacto.',
   },
   nav: {
     how: 'Como funciona',
@@ -24,14 +24,14 @@ const pt = {
     skip: 'Saltar para o conteúdo',
   },
   hero: {
-    eyebrow: 'Cúpulas geodésicas em madeira',
+    eyebrow: 'Domos geodésicos em madeira',
     title: 'Uma casa que se monta triângulo a triângulo.',
     lead:
-      'Desenhamos e cortamos kits de cúpulas geodésicas em madeira, prontos a montar por si: painéis numerados, manual passo a passo e a nossa equipa sempre contactável. Prefere não pegar no berbequim? Também construímos por si.',
+      'Desenhamos e cortamos kits de domos geodésicos em madeira, prontos a montar por si: painéis numerados, manual passo a passo e a nossa equipa sempre contactável. Prefere não pegar no berbequim? Também construímos por si.',
     ctaPrimary: 'Ver modelos',
     ctaSecondary: 'Pedir orçamento',
     tags: ['Kit para montar', 'Montagem assistida', 'Chave na mão'],
-    alt: 'Cúpula geodésica em madeira com janelas triangulares',
+    alt: 'Domo geodésico em madeira com janelas triangulares',
   },
   facts: [
     { value: '105', label: 'painéis triangulares, em apenas 2 formatos' },
@@ -41,7 +41,7 @@ const pt = {
   ],
   how: {
     eyebrow: 'Como funciona',
-    title: 'Do kit à cúpula, em quatro passos.',
+    title: 'Do kit ao domo, em quatro passos.',
     steps: [
       {
         title: 'Escolha o modelo',
@@ -65,13 +65,13 @@ const pt = {
     panelA: 'Painel A',
     panelB: 'Painel B',
     panelsNote: 'Medidas dos lados no D’OME 6.',
-    buildAlt: 'Cúpula de painéis triangulares em madeira em montagem, sobre uma plataforma de madeira',
+    buildAlt: 'Domo de painéis triangulares em madeira em montagem, sobre uma plataforma de madeira',
     kitAlt: 'Kit de painéis triangulares em madeira, empilhados na oficina com os ligadores metálicos',
   },
   models: {
     eyebrow: 'Modelos',
     title: 'Três tamanhos, a mesma geometria.',
-    lead: 'Todas as cúpulas D’OME usam a mesma geometria geodésica 3V 5/8: muito estável, com paredes que sobem quase na vertical antes de curvar.',
+    lead: 'Todos os domos D’OME usam a mesma geometria geodésica 3V 5/8: muito estável, com paredes que sobem quase na vertical antes de curvar.',
     diameter: 'Diâmetro',
     floor: 'Área de chão',
     height: 'Altura',
@@ -82,12 +82,12 @@ const pt = {
     },
     cta: 'Pedir orçamento',
     other: 'Precisa de outra medida? Fale connosco.',
-    interiorAlt: 'Interior de uma cúpula em madeira, com teto triangular e luz natural',
+    interiorAlt: 'Interior de um domo em madeira, com teto triangular e luz natural',
   },
   covers: {
     eyebrow: 'Revestimentos',
     title: 'A mesma estrutura, quatro peles.',
-    lead: 'A estrutura em madeira é sempre a mesma. O revestimento decide como vai viver a sua cúpula.',
+    lead: 'A estrutura em madeira é sempre a mesma. O revestimento decide como vai viver o seu domo.',
     items: [
       {
         id: 'osb',
@@ -95,15 +95,15 @@ const pt = {
         sub: 'Para viver todo o ano',
         text: 'Painéis OSB sobre a estrutura, isolamento em fibra de madeira, membrana respirável e acabamento exterior em shingle de madeira.',
         tags: ['Habitação permanente', 'Isolamento térmico'],
-        alt: 'Cúpula revestida a OSB com acabamento em madeira e porta de entrada',
+        alt: 'Domo revestido a OSB com acabamento em madeira e porta de entrada',
       },
       {
         id: 'cork',
         name: 'Cortiça',
         sub: 'Natural e isolante',
-        text: 'Placas de aglomerado de cortiça expandida sobre a estrutura. Isolam a cúpula e ficam à vista como acabamento exterior.',
+        text: 'Placas de aglomerado de cortiça expandida sobre a estrutura. Isolam o domo e ficam à vista como acabamento exterior.',
         tags: ['Habitação permanente', 'Isolamento natural'],
-        alt: 'Cúpula revestida a placas de cortiça escura, com janelas triangulares',
+        alt: 'Domo revestido a placas de cortiça escura, com janelas triangulares',
       },
       {
         id: 'fabric',
@@ -111,7 +111,7 @@ const pt = {
         sub: 'Leve, rápido, sazonal',
         text: 'Membrana técnica tensionada sobre a estrutura de madeira. Montagem rápida, luz filtrada, ideal para glamping, eventos e verão.',
         tags: ['Montagem rápida', 'Glamping e eventos'],
-        alt: 'Cúpula revestida a tecido técnico claro sobre estrutura de madeira',
+        alt: 'Domo revestido a tecido técnico claro sobre estrutura de madeira',
       },
       {
         id: 'glass',
@@ -119,10 +119,10 @@ const pt = {
         sub: 'Para ver o céu',
         text: 'Triângulos de vidro duplo em caixilho de madeira. Estufas, jardins de inverno e salas com o céu por teto.',
         tags: ['Luz natural', 'Estufa ou sala'],
-        alt: 'Cúpula envidraçada com estrutura de madeira e plantas no interior',
+        alt: 'Domo envidraçado com estrutura de madeira e plantas no interior',
       },
     ],
-    mix: 'Pode combinar: uma cúpula em OSB com alguns triângulos de vidro, por exemplo. Qualquer painel pode ser janela.',
+    mix: 'Pode combinar: um domo em OSB com alguns triângulos de vidro, por exemplo. Qualquer painel pode ser janela.',
   },
   sustainability: {
     eyebrow: 'Sustentabilidade',
@@ -148,7 +148,7 @@ const pt = {
       },
       {
         title: 'Desmontável e reutilizável',
-        text: 'As ligações são aparafusadas. A cúpula pode ser desmontada, mudada de sítio ou ampliada, e a madeira volta a ser útil.',
+        text: 'As ligações são aparafusadas. O domo pode ser desmontado, mudado de sítio ou ampliado, e a madeira volta a ser útil.',
       },
       {
         title: 'Madeira de origem responsável',
@@ -157,7 +157,7 @@ const pt = {
     ],
     sources: 'Fontes',
     footnotes: [
-      'Cálculo D’OME: cúpula geodésica 3V 5/8 comparada com um volume retangular de planta quadrada com a mesma área de chão e o mesmo volume interior (paredes + cobertura).',
+      'Cálculo D’OME: domo geodésico 3V 5/8 comparado com um volume retangular de planta quadrada com a mesma área de chão e o mesmo volume interior (paredes + cobertura).',
       'Deutschland.de, “Building with wood in Germany: 10 facts”.',
     ],
     sourceUrl: 'https://www.deutschland.de/en/topic/environment/building-with-wood-in-germany-10-facts',
@@ -189,7 +189,7 @@ const pt = {
     title: 'Antes de começar.',
     items: [
       {
-        q: 'Preciso de licença para construir uma cúpula?',
+        q: 'Preciso de licença para construir um domo?',
         a: 'Depende do tamanho, do uso e do município. Uma habitação precisa, em regra, de licenciamento na câmara municipal; estruturas pequenas ou amovíveis podem ter regras mais simples. Ajudamos a preparar a documentação técnica para o seu processo.',
       },
       {
@@ -227,7 +227,7 @@ const pt = {
     cover: 'Revestimento',
     service: 'Serviço',
     message: 'Mensagem',
-    messageHint: 'Para que vai usar a cúpula? Tem já terreno e prazo em mente?',
+    messageHint: 'Para que vai usar o domo? Tem já terreno e prazo em mente?',
     unsure: 'Ainda não sei',
     mixed: 'Combinado',
     consent: 'Aceito que a D’OME use estes dados apenas para responder ao meu pedido.',
@@ -241,7 +241,7 @@ const pt = {
     back: 'Voltar ao início',
   },
   footer: {
-    tagline: 'Cúpulas geodésicas em madeira',
+    tagline: 'Domos geodésicos em madeira',
     rights: 'Todos os direitos reservados.',
   },
 };
