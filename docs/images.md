@@ -30,6 +30,8 @@ npm run photos -- --dry-run        # show the prompts, spend nothing
 
 To change a picture, edit its prompt in the script and run it again with `--force`.
 
+The same script also makes the four vertical (9:16) shots for the promo video in `video/public/shots/` (`video-hero`, `video-kit`, `video-build`, `video-interior`).
+
 Earlier Canva drafts, if you prefer one (Download → JPG, rename as above): [hero](https://www.canva.com/M/MAHYQZYgv0A), [kit](https://www.canva.com/M/MAHYQUWK4MQ), [montagem](https://www.canva.com/M/MAHYQb9Ayso), [cover-osb](https://www.canva.com/M/MAHYQVGY-pw).
 
 Tip: keep the dome a **5/8 dome made of triangles** (walls rise almost vertically before curving) so the photos match the illustrations and the specs. Replace AI images with real project photos as soon as you have them.

@@ -27,17 +27,20 @@ const pt = {
     eyebrow: 'Domos geodésicos em madeira',
     title: 'Uma casa que se monta triângulo a triângulo.',
     lead:
-      'Desenhamos e cortamos kits de domos geodésicos em madeira, prontos a montar por si: painéis numerados, manual passo a passo e a nossa equipa sempre contactável. Prefere não pegar no berbequim? Também construímos por si.',
+      'Desenhamos e cortamos kits de domos geodésicos em madeira, prontos a montar por si: triângulos de estrutura numerados, manual passo a passo e a nossa equipa sempre contactável. Prefere não pegar no berbequim? Também construímos por si.',
     ctaPrimary: 'Ver modelos',
     ctaSecondary: 'Pedir orçamento',
     tags: ['Kit para montar', 'Montagem assistida', 'Chave na mão'],
     alt: 'Domo geodésico em madeira com janelas triangulares',
+    statement: 'Primeiro, a estrutura. Depois, a casa.',
+    drag: 'Arraste para rodar',
+    tip: { A: '75 iguais em cada domo', B: '30 iguais em cada domo' },
   },
   facts: [
-    { value: '105', label: 'painéis triangulares, em apenas 2 formatos' },
+    { value: '105', label: 'triângulos de estrutura em madeira, em apenas 2 formatos' },
     { value: '≈ 22 %', label: 'menos parede e cobertura do que uma casa retangular com a mesma área e volume', note: '1' },
     { value: '≈ 1 t', label: 'de CO₂ guardada em cada metro cúbico de madeira', note: '2' },
-    { value: '0 gruas', label: 'painéis montados à mão, com ferramentas comuns' },
+    { value: '0 gruas', label: 'triângulos montados à mão, com ferramentas comuns' },
   ],
   how: {
     eyebrow: 'Como funciona',
@@ -49,7 +52,7 @@ const pt = {
       },
       {
         title: 'Receba o kit',
-        text: 'Painéis triangulares em madeira, pré-cortados, numerados e agrupados por anel, com ligadores, parafusaria e manual ilustrado.',
+        text: 'Triângulos de estrutura em madeira, fáceis de montar, e os painéis de revestimento: tudo pré-cortado, numerado e agrupado por anel, com ligadores, parafusaria e manual ilustrado.',
       },
       {
         title: 'Prepare a base',
@@ -57,16 +60,20 @@ const pt = {
       },
       {
         title: 'Monte anel a anel',
-        text: 'Do chão para o topo, cada anel trava o seguinte. O manual mostra o lugar de cada painel e estamos a um telefonema de distância.',
+        text: 'Do chão para o topo, cada anel trava o seguinte. O manual mostra o lugar de cada triângulo e estamos a um telefonema de distância.',
       },
     ],
     panelsTitle: 'Só dois formatos de triângulo',
-    panelsText: 'A geometria 3V 5/8 usa 105 painéis de apenas dois tipos. Menos peças diferentes, menos enganos.',
+    panelsText: 'A geometria 3V 5/8 usa 105 triângulos de estrutura em madeira, de apenas dois tipos, que se aparafusam uns aos outros. Os painéis de revestimento seguem as mesmas duas formas. Menos peças diferentes, menos enganos.',
+    framesLabel: 'Estrutura',
+    frameA: 'Triângulo A',
+    frameB: 'Triângulo B',
+    panelsLabel: 'Revestimento',
     panelA: 'Painel A',
     panelB: 'Painel B',
     panelsNote: 'Medidas dos lados no D’OME 6.',
-    buildAlt: 'Domo de painéis triangulares em madeira em montagem, sobre uma plataforma de madeira',
-    kitAlt: 'Kit de painéis triangulares em madeira, empilhados na oficina com os ligadores metálicos',
+    buildAlt: 'Domo de triângulos em madeira em montagem, sobre uma plataforma de madeira',
+    kitAlt: 'Kit na oficina: triângulos de estrutura em madeira sobre as pilhas de painéis, com os ligadores metálicos',
   },
   models: {
     eyebrow: 'Modelos',
@@ -123,6 +130,7 @@ const pt = {
       },
     ],
     mix: 'Pode combinar: um domo em OSB com alguns triângulos de vidro, por exemplo. Qualquer painel pode ser janela.',
+    mixButton: 'Ver OSB com vidro',
   },
   sustainability: {
     eyebrow: 'Sustentabilidade',
@@ -140,7 +148,7 @@ const pt = {
       },
       {
         title: 'Pouco desperdício em obra',
-        text: 'Os painéis chegam cortados à medida. No terreno quase não há sobras nem entulho.',
+        text: 'Os triângulos e os painéis chegam cortados à medida. No terreno quase não há sobras nem entulho.',
       },
       {
         title: 'Fundações leves',
@@ -268,17 +276,20 @@ const en: typeof pt = {
     eyebrow: 'Wooden geodesic domes',
     title: 'A home you build triangle by triangle.',
     lead:
-      'We design and cut wooden geodesic dome kits that are ready for you to build: numbered panels, a step-by-step manual and our team on call. Rather not pick up the drill? We build it for you too.',
+      'We design and cut wooden geodesic dome kits that are ready for you to build: numbered structure triangles, a step-by-step manual and our team on call. Rather not pick up the drill? We build it for you too.',
     ctaPrimary: 'See the models',
     ctaSecondary: 'Get a quote',
     tags: ['Self-build kit', 'Assisted build', 'Turnkey'],
     alt: 'Wooden geodesic dome with triangular windows',
+    statement: 'First the structure. Then the home.',
+    drag: 'Drag to turn',
+    tip: { A: '75 identical ones in every dome', B: '30 identical ones in every dome' },
   },
   facts: [
-    { value: '105', label: 'triangular panels, in just 2 shapes' },
+    { value: '105', label: 'wooden structure triangles, in just 2 shapes' },
     { value: '≈ 22 %', label: 'less wall and roof than a box-shaped house with the same floor area and volume', note: '1' },
     { value: '≈ 1 t', label: 'of CO₂ stored in every cubic metre of wood', note: '2' },
-    { value: '0 cranes', label: 'panels go up by hand, with ordinary tools' },
+    { value: '0 cranes', label: 'triangles go up by hand, with ordinary tools' },
   ],
   how: {
     eyebrow: 'How it works',
@@ -290,7 +301,7 @@ const en: typeof pt = {
       },
       {
         title: 'Receive the kit',
-        text: 'Pre-cut wooden triangle panels, numbered and grouped by ring, with connectors, fixings and an illustrated manual.',
+        text: 'Easy-to-assemble wooden structure triangles and the cover panels: all pre-cut, numbered and grouped by ring, with connectors, fixings and an illustrated manual.',
       },
       {
         title: 'Prepare the base',
@@ -298,16 +309,20 @@ const en: typeof pt = {
       },
       {
         title: 'Build ring by ring',
-        text: 'From the ground up, each ring locks the next. The manual shows where every panel goes and we are a phone call away.',
+        text: 'From the ground up, each ring locks the next. The manual shows where every triangle goes and we are a phone call away.',
       },
     ],
     panelsTitle: 'Just two triangle shapes',
-    panelsText: 'The 3V 5/8 geometry uses 105 panels of only two types. Fewer different parts, fewer mistakes.',
+    panelsText: 'The 3V 5/8 geometry uses 105 wooden structure triangles of only two types, bolted to each other. The cover panels follow the same two shapes. Fewer different parts, fewer mistakes.',
+    framesLabel: 'Structure',
+    frameA: 'Triangle A',
+    frameB: 'Triangle B',
+    panelsLabel: 'Cover',
     panelA: 'Panel A',
     panelB: 'Panel B',
     panelsNote: 'Side lengths for the D’OME 6.',
-    buildAlt: 'Dome of wooden triangle panels being assembled on a timber platform',
-    kitAlt: 'Kit of wooden triangle panels stacked in the workshop with the metal connectors',
+    buildAlt: 'Dome of wooden triangles being assembled on a timber platform',
+    kitAlt: 'Kit in the workshop: wooden structure triangles on top of the stacked panels, with the metal connectors',
   },
   models: {
     eyebrow: 'Models',
@@ -364,6 +379,7 @@ const en: typeof pt = {
       },
     ],
     mix: 'You can combine them: an OSB dome with a few glass triangles, for example. Any panel can be a window.',
+    mixButton: 'See OSB with glass',
   },
   sustainability: {
     eyebrow: 'Sustainability',
@@ -381,7 +397,7 @@ const en: typeof pt = {
       },
       {
         title: 'Little waste on site',
-        text: 'Panels arrive cut to size. There are almost no offcuts or rubble on your land.',
+        text: 'Triangles and panels arrive cut to size. There are almost no offcuts or rubble on your land.',
       },
       {
         title: 'Light foundations',

@@ -1,12 +1,13 @@
 # D’OME website
 
-Marketing site for **D’OME**, a business selling wooden geodesic dome kits (DIY, triangle panels) with an optional build-for-a-fee service. Covers: OSB, cork, technical fabric, glass. Sustainability is a core message. Business context: `docs/business-brief.md`.
+Marketing site for **D’OME**, a business selling wooden geodesic dome kits (DIY) with an optional build-for-a-fee service. The kit's structure is 105 easy-to-assemble wooden triangle frames (2 shapes: 75 A + 30 B) that bolt together; cover panels of the same shapes go on top. Say "triângulos de estrutura" for the frames and "painéis" only for the cover. Covers: OSB, cork, technical fabric, glass. Sustainability is a core message. Business context: `docs/business-brief.md`.
 
 ## Stack
 
 - Astro 7 static site, no UI framework. Node ≥ 22.22.
 - `npm run dev` (http://localhost:4321) · `npm run build` → `dist/` · `npm run preview` · `npm run photos` (Higgsfield)
-- System Node is 20; use Homebrew's `node@22` (`/opt/homebrew/opt/node@22/bin`). `node_modules` is a symlink to `node_modules.nosync/node_modules` (iCloud). Install deps with `sh scripts/install-deps.sh`, never plain `npm install`/`npm ci` in this folder (it replaces the link and iCloud then deletes files).
+- System Node is 20; use Homebrew's `node@22` (`/opt/homebrew/opt/node@22/bin`).
+- The project lives in `~/Developer/dome`, outside iCloud Drive (iCloud corrupted `node_modules`). Don't move it back.
 - Fonts: `@fontsource-variable/archivo` (width + weight axes), self-hosted.
 - Quote form: FormSubmit (`business.formAction` in `src/config.ts` → formsubmit.co, CC + subject there too). Empty `formAction` falls back to Netlify Forms (`data-netlify`).
 - Hosting: GitHub Pages at https://miguelmalungo.github.io/dome/ (`npm run deploy` → `gh-pages` branch). Served under `base: '/dome'`: build every internal link or `public/` asset URL with `withBase()` (`src/lib/url.ts`) or `paths` (`src/i18n/ui.ts`), never a bare `/…`.
@@ -28,6 +29,8 @@ Marketing site for **D’OME**, a business selling wooden geodesic dome kits (DI
 - `scripts/photos/higgsfield.mjs`: the photo prompts; generates them via the Higgsfield API (keys in `.env`). Edit prompts there, not in the docs.
 - `src/illustrations/*.svg`: dome drawings generated from real 3V 5/8 geometry by `python3 scripts/illustrations/render.py` (pure Python). Don't hand-edit them; change the script and re-run.
 - `brand/`: logo files (SVG + PNG) for use outside the site.
+- 3D + motion (progressive enhancement): `Base.astro` adds `html.stage` only with WebGL 2, no reduced motion and no data saver; without it the site is the plain photo/card version. `src/lib/dome/` builds the dome in three.js from the same 3V 5/8 geometry (`geometry.ts`, 105 faces: 75 A + 30 B), one timber frame + one cover panel per face (`DomeModel.ts`), and a stage with drag/hover (`Viewer.ts`). `src/scripts/hero-stage.ts`: load sequence (frames assemble, headline widens on Archivo's `wdth` axis) and the pinned scroll (cladding → triangle reveal of the hero photo). `src/scripts/covers-stage.ts`: choosing a cover flips the panels. GSAP (ScrollTrigger, SplitText), Lenis and three.js are dynamic imports. Keep motion to these moments: no generic fade-ins on every section.
+- `video/`: separate Remotion project (own `package.json`) for the 9:16 Reels/TikTok promo, PT + EN. Copy in `video/src/copy.ts` (same rules: European Portuguese, no invented numbers). Every scene starts on a bar of the beat map in `video/src/timeline.ts`; keep cuts on the grid (`bar(n)`; 90.75 BPM, so a beat is 19.83 frames; video starts on the downbeat at 0:31.8, big drop at `bar(4)`, break and end card from `bar(12)`). Text stays inside `SAFE` (Reels/TikTok UI).
 
 ## Brand
 

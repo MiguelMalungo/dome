@@ -13,7 +13,16 @@ const c = t(lang);
 const photo = getPhoto('hero');
 ---
 
-<section class:list={['hero', photo ? 'hero--photo' : 'hero--drawn']}>
+<section
+  class:list={['hero', photo ? 'hero--photo' : 'hero--drawn']}
+  data-hero
+  data-label-a={c.how.frameA}
+  data-label-b={c.how.frameB}
+  data-tip-a={c.hero.tip.A}
+  data-tip-b={c.hero.tip.B}
+>
+  <canvas class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-edge" aria-hidden="true"></div>
   {
     photo && (
       <div class="hero-bg">
@@ -42,7 +51,24 @@ const photo = getPhoto('hero');
       )
     }
   </div>
+  {
+    photo && (
+      <div class="wrap hero-statement-wrap">
+        <p class="hero-statement">{c.hero.statement}</p>
+      </div>
+    )
+  }
+  <p class="hero-hint" aria-hidden="true">
+    <svg viewBox="0 0 36 12" width="36" height="12"><path d="M0 6l6-5v10zM36 6l-6-5v10z" fill="currentColor"></path></svg>
+    {c.hero.drag}
+  </p>
+  <div class="dome-tip" aria-hidden="true"><strong></strong><span></span></div>
 </section>
+
+<script>
+  import { initHeroStage } from '../scripts/hero-stage';
+  initHeroStage();
+</script>
 
 <section class="facts" aria-label="D’OME">
   <div class="wrap">
@@ -235,6 +261,216 @@ const photo = getPhoto('hero');
     }
     .facts-list li:nth-child(n + 3) {
       border-top: 1px solid var(--line);
+    }
+  }
+
+  /* Stage mode (html.stage): the 3D dome assembles on a dusk stage; scrolling opens onto the photo. */
+  .hero-canvas,
+  .hero-edge,
+  .hero-statement-wrap,
+  .hero-hint,
+  .dome-tip {
+    display: none;
+  }
+  :global(.stage) .hero {
+    min-height: 100svh;
+    margin-top: calc(-1 * var(--header-h));
+    padding-block: calc(var(--header-h) + 40px) clamp(40px, 6vw, 80px);
+    display: flex;
+    align-items: flex-end;
+    color: var(--paper);
+    background:
+      radial-gradient(48% 52% at 70% 56%, rgba(212, 154, 42, 0.2), rgba(212, 154, 42, 0) 70%),
+      radial-gradient(120% 90% at 70% 100%, #1e3d34 0%, #142a22 55%, #0e1e18 100%);
+  }
+  :global(.stage) .hero-canvas {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    cursor: grab;
+    touch-action: pan-y;
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+  :global(.stage) .hero.is-live .hero-canvas {
+    opacity: 1;
+  }
+  :global(.stage) .hero-canvas:global(.is-dragging) {
+    cursor: grabbing;
+  }
+  :global(.stage) .hero-edge {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--accent);
+    clip-path: polygon(0 0, 0 0, 0 0);
+    pointer-events: none;
+  }
+  :global(.stage) .hero-bg {
+    z-index: 1;
+    clip-path: polygon(0 0, 0 0, 0 0);
+    pointer-events: none;
+  }
+  :global(.stage) .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 30%;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(14, 30, 24, 0.55), rgba(14, 30, 24, 0));
+  }
+  :global(.stage) .hero-grid {
+    position: relative;
+    z-index: 2;
+    grid-template-columns: minmax(0, 1fr);
+    pointer-events: none;
+  }
+  :global(.stage) .hero-copy {
+    pointer-events: auto;
+    max-width: 38rem;
+  }
+  :global(.stage) .hero h1 {
+    color: var(--paper);
+  }
+  /* Hidden until the entrance runs; shown anyway after 3.5 s if scripts never load. */
+  :global(.stage) .hero-copy > * {
+    visibility: hidden;
+    animation: hero-safety 0s 3.5s forwards;
+  }
+  @keyframes hero-safety {
+    to {
+      visibility: visible;
+    }
+  }
+  :global(.stage) .hero .lead,
+  :global(.stage) .hero .hero-tags {
+    color: #d4ddd8;
+  }
+  :global(.stage) .hero .eyebrow {
+    color: #f0c46e;
+  }
+  :global(.stage) .hero .btn {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--ink);
+  }
+  :global(.stage) .hero .btn--ghost {
+    background: transparent;
+    color: var(--paper);
+  }
+  :global(.stage) .hero .btn--ghost:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  :global(.stage) .hero :global(.hero-line) {
+    white-space: nowrap;
+  }
+  :global(.stage) .hero-statement-wrap {
+    display: block;
+    position: absolute;
+    inset: auto 0 clamp(48px, 8vw, 110px);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-statement {
+    max-width: 14ch;
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    font-weight: 800;
+    font-stretch: 115%;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    text-wrap: balance;
+    visibility: hidden;
+  }
+  :global(.stage) .hero-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    z-index: 2;
+    right: var(--gutter);
+    bottom: clamp(40px, 6vw, 80px);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #d4ddd8;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  :global(.stage) .hero-hint svg {
+    color: var(--accent);
+    animation: hint-nudge 2.4s ease-in-out infinite;
+  }
+  :global(.stage) .hero-hint:global(.is-done) {
+    opacity: 0;
+  }
+  @keyframes hint-nudge {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(4px);
+    }
+  }
+  :global(.stage) .dome-tip {
+    display: grid;
+    gap: 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    padding: 10px 14px 11px;
+    border-radius: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 10px 30px rgba(8, 16, 12, 0.35);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  :global(.stage) .dome-tip:global(.is-on) {
+    opacity: 1;
+  }
+  .dome-tip strong {
+    font-weight: 800;
+    font-stretch: 112%;
+    font-size: 1rem;
+  }
+  .dome-tip span {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  :global(.stage) .facts {
+    padding-top: clamp(48px, 6vw, 80px);
+  }
+  @media (max-width: 900px) {
+    :global(.stage) .hero {
+      padding-top: 36svh;
+      padding-bottom: 32px;
+    }
+    :global(.stage) .hero-copy {
+      gap: 16px;
+    }
+    :global(.stage) .hero h1 {
+      font-size: clamp(2.1rem, 9.6vw, 2.8rem);
+    }
+    :global(.stage) .hero .lead {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    :global(.stage) .hero-tags {
+      display: none;
+    }
+    :global(.stage) .hero-hint {
+      top: calc(var(--header-h) + 12px);
+      bottom: auto;
+      right: 50%;
+      transform: translateX(50%);
     }
   }
 </style>

@@ -51,6 +51,16 @@ const pageDescription = description ?? c.meta.description;
     {page === 'home' && <script type="application/ld+json" set:html={JSON.stringify(jsonLd(lang, Astro.site!))} />}
     <Analytics />
     <SpeedInsights />
+    <script is:inline>
+      // Stage mode (3D hero, smooth scroll) only with WebGL 2, without reduced motion or data saver.
+      (function () {
+        try {
+          var c = document.createElement('canvas');
+          var ok = !matchMedia('(prefers-reduced-motion: reduce)').matches && !(navigator.connection && navigator.connection.saveData) && c.getContext('webgl2');
+          if (ok) document.documentElement.classList.add('stage');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">{c.nav.skip}</a>

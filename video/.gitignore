@@ -1,0 +1,4 @@
+node_modules
+out/
+# Suno tracks: kept out of the public repo (licence). Put them back in public/music/ to render.
+public/music/*.mp3

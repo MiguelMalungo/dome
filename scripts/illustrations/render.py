@@ -191,8 +191,28 @@ def panel(kind):
     Q=' '.join('%.1f,%.1f'%(cx+(q[0]-cx)*0.78, cy+(q[1]-cy)*0.78) for q in p)
     b+=f'<polygon points="{Q}" fill="none" stroke="#5E3F25" stroke-opacity="0.35" stroke-width="2" stroke-linejoin="round"/>'
     return svg(b,(-0.24*S,-0.42*S,0.48*S,0.46*S),'Painel triangular tipo '+kind.upper())
+def frame(kind):
+    # the structure triangle under each panel: same outline, built as an open timber frame
+    if kind=='a': base,leg=0.4035,0.4124
+    else: base,leg=0.4035,0.3486
+    S=400; h=math.sqrt(leg**2-(base/2)**2)
+    p=[(-base/2*S,0),(base/2*S,0),(0,-h*S)]
+    d=lambda u,v: math.hypot(u[0]-v[0],u[1]-v[1])
+    la,lb,lc=d(p[1],p[2]),d(p[0],p[2]),d(p[0],p[1])
+    ix=(la*p[0][0]+lb*p[1][0]+lc*p[2][0])/(la+lb+lc); iy=(la*p[0][1]+lb*p[1][1]+lc*p[2][1])/(la+lb+lc)
+    r=base*S*h*S/(la+lb+lc)  # inradius
+    k=(r-16)/r  # 16-unit timber members
+    q=[(ix+(x-ix)*k, iy+(y-iy)*k) for x,y in p]
+    ring='M'+' L'.join('%.1f %.1f'%v for v in p)+' Z M'+' L'.join('%.1f %.1f'%v for v in q)+' Z'
+    b=f'<path d="{ring}" fill="#C99A66" fill-rule="evenodd" stroke="#5E3F25" stroke-width="4" stroke-linejoin="round"/>'
+    for i in range(3):
+        b+=f'<line x1="{p[i][0]:.1f}" y1="{p[i][1]:.1f}" x2="{q[i][0]:.1f}" y2="{q[i][1]:.1f}" stroke="#5E3F25" stroke-width="2.5" stroke-linecap="round"/>'
+        m1=((p[i][0]+q[i][0])/2,(p[i][1]+q[i][1])/2); j=(i+1)%3; m2=((p[j][0]+q[j][0])/2,(p[j][1]+q[j][1])/2)
+        b+=f'<line x1="{m1[0]:.1f}" y1="{m1[1]:.1f}" x2="{m2[0]:.1f}" y2="{m2[1]:.1f}" stroke="#5E3F25" stroke-opacity="0.22" stroke-width="1.5"/>'
+    return svg(b,(-0.24*S,-0.42*S,0.48*S,0.46*S),'Triângulo de estrutura tipo '+kind.upper())
 open(OUT+'/dome-hero.svg','w').write(hero())
 for k in ('osb','fabric','glass','cork'): open(OUT+f'/dome-{k}.svg','w').write(cover(k))
 open(OUT+'/dome-build.svg','w').write(build())
 for k in 'ab': open(OUT+f'/panel-{k}.svg','w').write(panel(k))
+for k in 'ab': open(OUT+f'/frame-{k}.svg','w').write(frame(k))
 print('ok', len(F))

@@ -11,24 +11,28 @@ export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 ```
 
 ```sh
-sh scripts/install-deps.sh   # instead of npm install (iCloud, see below)
+npm install
 npm run dev        # http://localhost:4321
 npm run build      # static site in dist/
 npm run preview    # serve dist/ locally
 npm run photos     # generate the photos with Higgsfield (see docs/images.md)
 ```
 
-### This folder is in iCloud Drive
+Keep the project out of iCloud Drive: iCloud corrupts `node_modules`. It lives in `~/Developer/dome`; GitHub is the backup.
 
-iCloud can delete files from `node_modules` once it starts syncing them (it happened here, breaking `npm run dev`). Install the dependencies with this script instead of `npm install`:
+## Promo video (Instagram Reels / TikTok)
+
+`video/` is a separate [Remotion](https://www.remotion.dev) project: a 42 s, 1080×1920 promo in Portuguese and English, cut to the beat of `video/public/music/hazy-nature-mood.mp3` (from 0:31.8: 4 bars of groove, the big drop at 0:42, 8 bars of full beat, then the break).
 
 ```sh
-sh scripts/install-deps.sh
+cd video
+npm install
+npm run studio     # preview and tweak in the browser
+npm run render     # out/dome-promo-pt.mp4 and out/dome-promo-en.mp4
+npm run covers     # out/cover-pt.jpg and out/cover-en.jpg (end card stills)
 ```
 
-It installs outside iCloud, moves the result into `node_modules.nosync/node_modules` (iCloud skips `.nosync`) and links `node_modules` to it. Run it again after changing dependencies: a plain `npm install` replaces the link with a real folder that iCloud will sync. To add a package, `npm install <pkg> --package-lock-only`, then run the script.
-
-The simplest long-term fix is to keep the project outside iCloud Drive (e.g. `~/Projects/dome`) and sync it with git.
+On-screen text is in `video/src/copy.ts`, the beat map and scene timing in `video/src/timeline.ts`. The vertical photos (`video/public/shots/`) come from `npm run photos -- video-hero video-kit video-build video-interior`; the cover photos and drawings are imported from the site's `src/`.
 
 ## Work on it with Claude Code
 

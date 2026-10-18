@@ -4,6 +4,8 @@ import { t, type Lang } from '../i18n/ui';
 import buildSvg from '../illustrations/dome-build.svg?raw';
 import panelA from '../illustrations/panel-a.svg?raw';
 import panelB from '../illustrations/panel-b.svg?raw';
+import frameA from '../illustrations/frame-a.svg?raw';
+import frameB from '../illustrations/frame-b.svg?raw';
 
 interface Props {
   lang: Lang;
@@ -15,6 +17,15 @@ const dec = (n: number) => (lang === 'pt' ? n.toFixed(2).replace('.', ',') : n.t
 const panels = [
   { label: c.panelA, svg: panelA, count: 75, sides: [1.26, 1.26, 1.23] },
   { label: c.panelB, svg: panelB, count: 30, sides: [1.06, 1.06, 1.23] },
+];
+// The structure: one timber triangle per face, same two shapes as the panels that cover them.
+const frames = [
+  { label: c.frameA, svg: frameA, count: 75 },
+  { label: c.frameB, svg: frameB, count: 30 },
+];
+const rows = [
+  { label: c.framesLabel, items: frames },
+  { label: c.panelsLabel, items: panels },
 ];
 ---
 
@@ -51,19 +62,24 @@ const panels = [
             <h3>{c.panelsTitle}</h3>
             <p>{c.panelsText}</p>
           </div>
-          <ul class="panel-list">
-            {
-              panels.map((p) => (
-                <li>
-                  <div class="panel-shape" set:html={p.svg} />
-                  <p class="panel-count">
-                    <strong>{p.count}×</strong> {p.label}
-                  </p>
-                  <p class="panel-sides">{p.sides.map(dec).join(' · ')} m</p>
-                </li>
-              ))
-            }
-          </ul>
+          {
+            rows.map((row) => (
+              <div class="panel-row">
+                <p class="panel-row-label">{row.label}</p>
+                <ul class="panel-list">
+                  {row.items.map((p) => (
+                    <li>
+                      <div class="panel-shape" set:html={p.svg} />
+                      <p class="panel-count">
+                        <strong>{p.count}×</strong> {p.label}
+                      </p>
+                      {'sides' in p && <p class="panel-sides">{p.sides.map(dec).join(' · ')} m</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
           <p class="panels-note">{c.panelsNote}</p>
         </div>
         <Visual name="kit" alt={c.kitAlt} class="how-kit" />
@@ -137,9 +153,22 @@ const panels = [
     border-radius: var(--radius);
     padding: 24px;
     display: grid;
+    gap: 18px;
+  }
+  .panel-row {
+    display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 18px 28px;
+    gap: 12px 28px;
     align-items: center;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+  .panel-row-label {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-text);
   }
   .panels-copy {
     display: grid;
@@ -183,7 +212,6 @@ const panels = [
     white-space: nowrap;
   }
   .panels-note {
-    grid-column: 1 / -1;
     font-size: 0.8rem;
     color: var(--muted);
   }
@@ -197,7 +225,7 @@ const panels = [
     }
   }
   @media (max-width: 560px) {
-    .panels {
+    .panel-row {
       grid-template-columns: minmax(0, 1fr);
     }
     .panel-list {

@@ -19,6 +19,7 @@
   --wrap: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
   --section: clamp(72px, 10vw, 136px);
+  --header-h: 73px;
 }
 
 *,
@@ -36,6 +37,17 @@ html {
   html {
     scroll-behavior: auto;
   }
+}
+/* Lenis smooth scrolling (stage mode only). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
