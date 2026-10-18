@@ -1,4 +1,5 @@
-// Generates the site photos with the Higgsfield API and saves them to src/assets/photos/.
+// Generates the site photos (src/assets/photos/) and the promo video shots (video/public/shots/)
+// with the Higgsfield API.
 // Run: npm run photos -- [names…] [--force] [--dry-run] [--resolution 720p|1080p] [--model <id>]
 //   names        only these photos (default: every photo that doesn't exist yet)
 //   --force      regenerate even if the photo already exists (replaces it)
@@ -6,14 +7,15 @@
 // Credentials go in .env (gitignored): HF_API_KEY_ID and HF_API_KEY_SECRET,
 // or HF_KEY="<id>:<secret>". Get them at https://cloud.higgsfield.ai (API keys).
 // Each image spends API credits. Saved as JPEG (sharp, already a dependency) to keep the repo small.
-import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { existsSync, mkdirSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const OUT = join(ROOT, 'src/assets/photos');
+const SHOTS = join(ROOT, 'video/public/shots'); // vertical 9:16 stills for the Remotion promo
 const API = 'https://api.higgsfield.ai';
 
 // Shared by every prompt so the set looks like one shoot of one product.
@@ -64,6 +66,35 @@ const PHOTOS = [
     // Evening mood: lit only by warm lamps, deep amber and red glow.
     prompt: `living room inside ${DOME} in the evening, lit only by many warm glowing lamps: a large round rice-paper lantern, red and orange glass pendant lamps, small mushroom table lamps, a tall stacked paper globe floor lamp, deep amber, orange and red light reflecting on the light timber triangles of the curved ceiling, soft shadows, cosy and moody, low sofa, striped wool rug, a few plants, main subject in the middle of the frame, photorealistic interior photography, warm cinematic colour, no people, no text, no logos, no watermark`,
   },
+  // Promo video (video/): vertical 9:16, subject low in the frame so titles fit in the sky/top.
+  {
+    name: 'video-hero',
+    dir: SHOTS,
+    file: 'hero',
+    aspect: '9:16',
+    prompt: `${DOME}, clad in warm natural wooden shingles with a few triangular windows glowing softly, standing on a low wooden deck in a meadow with cork oaks in the Alentejo, Portugal, golden hour, vertical composition with the dome in the lower half and a wide clear evening sky above, ${STYLE}`,
+  },
+  {
+    name: 'video-kit',
+    dir: SHOTS,
+    file: 'kit',
+    aspect: '9:16',
+    prompt: `tall stacks of pre-cut flat triangular plywood panels for a geodesic dome kit, light timber, neatly sorted by size on a clean workshop floor, steel connector plates and screws beside them, soft daylight from a large window, vertical composition, ${STYLE}`,
+  },
+  {
+    name: 'video-build',
+    dir: SHOTS,
+    file: 'build',
+    aspect: '9:16',
+    prompt: `${DOME}, under construction: the lower half already assembled from light plywood triangles bolted edge to edge in a geodesic pattern, the top still open to the sky, on a round timber platform, a stepladder beside it, rural Portugal, soft morning light, vertical composition with the dome in the lower half and sky above, ${STYLE}`,
+  },
+  {
+    name: 'video-interior',
+    dir: SHOTS,
+    file: 'interior',
+    aspect: '9:16',
+    prompt: `living room inside ${DOME} in the evening, lit only by many warm glowing lamps: a large round rice-paper lantern hanging high, red and orange glass pendant lamps, small mushroom table lamps, a tall stacked paper globe floor lamp, deep amber, orange and red light on the light timber triangles of the curved ceiling, soft shadows, cosy and moody, low sofa, striped wool rug, vertical composition looking up towards the ceiling, photorealistic interior photography, warm cinematic colour, no people, no text, no logos, no watermark`,
+  },
 ];
 
 const args = process.argv.slice(2);
@@ -79,8 +110,10 @@ const model = option('--model', process.env.HIGGSFIELD_MODEL ?? 'higgsfield-ai/s
 const unknown = names.filter((n) => !PHOTOS.some((p) => p.name === n));
 if (unknown.length) fail(`Unknown photo name(s): ${unknown.join(', ')}. Known: ${PHOTOS.map((p) => p.name).join(', ')}`);
 
-const existing = (name) => readdirSync(OUT).filter((f) => f.replace(/\.[^.]+$/, '') === name);
-const todo = PHOTOS.filter((p) => (names.length ? names.includes(p.name) : true)).filter((p) => force || existing(p.name).length === 0);
+const dirOf = (p) => p.dir ?? OUT;
+const fileOf = (p) => p.file ?? p.name;
+const existing = (p) => (existsSync(dirOf(p)) ? readdirSync(dirOf(p)).filter((f) => f.replace(/\.[^.]+$/, '') === fileOf(p)) : []);
+const todo = PHOTOS.filter((p) => (names.length ? names.includes(p.name) : true)).filter((p) => force || existing(p).length === 0);
 
 if (!todo.length) {
   console.log('Nothing to generate: every photo already exists. Use --force to replace one.');
@@ -134,10 +167,11 @@ async function generate(p) {
   const jpeg = await sharp(Buffer.from(await res.arrayBuffer())).jpeg({ quality: 90, mozjpeg: true }).toBuffer();
 
   // Remove the old version (any extension) so getPhoto() picks up the new one.
-  for (const f of existing(p.name)) unlinkSync(join(OUT, f));
-  const file = `${p.name}.jpg`;
-  writeFileSync(join(OUT, file), jpeg);
-  console.log(`✓ ${p.name}: saved src/assets/photos/${file}`);
+  for (const f of existing(p)) unlinkSync(join(dirOf(p), f));
+  mkdirSync(dirOf(p), { recursive: true });
+  const file = join(dirOf(p), `${fileOf(p)}.jpg`);
+  writeFileSync(file, jpeg);
+  console.log(`✓ ${p.name}: saved ${relative(ROOT, file)}`);
 }
 
 async function api(url, init) {
